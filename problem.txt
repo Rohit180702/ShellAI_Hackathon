@@ -1,0 +1,78 @@
+Fuel Blend Properties Prediction Challenge:
+
+Problem Statement:
+
+In the fuel industry, blending different fuel components to achieve desired properties is both an art and a science. Crafting the optimal fuel blend—mixing various components from diverse pathways with each other or with conventional fuels—is an intricate science. The relationships between component fractions and final blend properties are highly complex, involving linear and non-linear interactions, synergistic effects, and conditional behaviours that vary based on component combinations. This complexity makes accurate prediction a challenging, high-dimensional problem.
+
+Your challenge is to develop models capable of accurately predicting the properties of fuel blends based on their constituent components and their proportions. These predictions must be precise enough to guide real-world blending decisions where safety, performance, and sustainability are paramount. By harnessing the power of data science and machine learning, you will help accelerate the adoption of sustainable 
+aviation fuels by providing tools that can:
+
+• Rapidly evaluate thousands of potential blend combinations.
+• Identify optimal recipes that maximize sustainability while meeting specifications.
+• Reduce the development time for new sustainable fuel formulations.
+• Enable real-time blend optimization in production facilities.
+
+Your work will help engineer powerful predictive tools to guide the industry in formulating the next generation of sustainable fuels, accelerating the transition to a net-zero future without compromising on excellence.
+
+
+DATA:
+
+To tackle this challenge, you will be provided with a dataset designed to reflect the real-world complexities of fuel blending. The data is split into three files: train.csv, test.csv, and sample_submission.csv.
+
+1. train.csv
+
+This file contains the data for training your predictive models. Each row represents a unique fuel blend with a total of 65 columns, which are organized into three distinct groups:
+
+Blend Composition (first 5 columns): These columns specify the volume percentage of each base component in the blend.
+
+Component Properties (next 50 columns): This section simulates a real-world Certificate of Analysis (COA), providing the properties for the specific batch of each component used in a blend. The column names are structured using the format {component_number}_{property_number}. For example, the Property1 for the Component1 component is found in the column Component1_Property1. This structure applies to all 5 components and their 10 respective properties. This suite of properties provides a holistic assessment of the fuel, detailing its core physical and chemical nature, critical safety and operational limits, and its full lifecycle environmental impact.
+
+Final Blend Properties - Targets (last 10 columns): These are the 10 target variables your model must predict. They correspond to properties of the blend which will be used as a 'drop-in' replacement fuel. The column names for these target properties are Blend{property_number} (e.g., BlendProperty1, BlendProperty2 etc.).
+
+2. test.csv
+
+This file is used to evaluate the performance of your model. It contains the input features for 500 blends that are not present in the training data. The structure of this file is identical to train.csv, containing the 55 input feature columns (5 for blend composition (volume fractions) followed by 50 for component properties). 
+
+However, it does not contain the 10 target property columns. Your model must predict these values as part of the submission file.
+
+The test set is split for leaderboard evaluation:
+• Public Leaderboard: First half of the samples (250) will be used to calculate your score on the public leaderboard, which is visible throughout the competition.
+• Private Leaderboard: The remaining half of the samples (250) will be used for the private leaderboard. Your final score and ranking will be determined by your model's performance on this private subset, which will be revealed only after the competition closes.
+
+3. sample_submission.csv
+
+This file demonstrates the required format for your submission. Your submission file must follow this structure precisely to be scored correctly. The file should contain your predictions for the samples in test.csv. Each row in your submission must correspond to the same row in the test.csv file. The order must be preserved for correct evaluation.
+
+It must contain exactly 10 columns, one for each of the 10 target properties your model is expected to predict. Here also, the ordering of the columns must be preserved as BlendProperty1, BlendProperty2,…,BlendProperty10. The file should not contain an ID column or any other columns.
+
+Evaluation
+
+Like in previous years, we want to inspire our participants with a computing challenge vital for sustainable and affordable energy. This year's challenge is to estimate the properties of blended fuels.
+
+The evaluation metric we will be using is Mean Absolute percentage Error (MAPE) which is guided by the formula:
+
+              n_samples - 1
+MAPE(y, ŷ) = (1 / n_samples) * Σ |yᵢ - ŷᵢ| / max(ε, |yᵢ|)
+              i = 0
+
+Where:
+
+    yᵢ  = ground-truth predictions
+    ŷᵢ = model predictions
+    n_samples = number of data samples
+
+We recommend you use the scikit learn API of MAPE to calculate the efficacy of your solution. The output of the MAPE API will be directly used to calculate the final leaderboard scores.
+
+The scores on the leaderboard are calculated using:
+
+LeaderboardScore = max [10, (100 − (90 × cost / ReferenceCost))]
+
+Scores between 0 and 10 are reserved for error codes. In the above formula, “cost” is the
+MAPE produced by the solution, and “Reference Cost” is set differently for public and private
+leaderboard. For public leaderboard, the reference cost is: 2.72 and for private
+leaderboard, the reference cost is: 2.58
+Error codes:
+0 ←Not a csv file
+1 ←Some property column with the specified name structure doesn’t exist.
+2 ←Solution contains non-floating-point numbers.
+3 ←Solution should have 500 rows and 10 columns
